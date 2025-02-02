@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "da53f0ab-6581-476a-951e-c0e959fa92a7",
+		"name": "Blog",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18077941"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Save tokens to environment variables\", () => {\r",
+							"    let jsonResponse = pm.response.json()\r",
+							"    pm.collectionVariables.set(\"ACCESS_KEY\", jsonResponse.data.token)\r",
+							"    pm.expect(jsonResponse.data.token).to.be.a(\"string\")\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{APP_URL}}/login",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{APP_URL}}/user",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Save tokens to environment variables\", () => {\r",
+							"    let jsonResponse = pm.response.json()\r",
+							"    pm.collectionVariables.set(\"ID_POST\", jsonResponse.data.id)\r",
+							"    pm.expect(jsonResponse.data.id).to.be.a(\"string\")\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "First Post",
+							"type": "text"
+						},
+						{
+							"key": "body",
+							"value": "This's First Post Body",
+							"type": "text"
+						},
+						{
+							"key": "tags[]",
+							"value": "information",
+							"type": "text"
+						},
+						{
+							"key": "tags[]",
+							"value": "technology",
+							"type": "text"
+						},
+						{
+							"key": "attachments",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "{{APP_URL}}/posts",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Save tokens to environment variables\", () => {\r",
+							"    let jsonResponse = pm.response.json()\r",
+							"    pm.collectionVariables.set(\"ID_POST\", jsonResponse.data.id)\r",
+							"    pm.expect(jsonResponse.data.id).to.be.a(\"string\")\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "Update Post",
+							"type": "text"
+						},
+						{
+							"key": "body",
+							"value": "This's Update Post Body",
+							"type": "text"
+						},
+						{
+							"key": "tags[]",
+							"value": "information",
+							"type": "text"
+						},
+						{
+							"key": "tags[]",
+							"value": "technology",
+							"type": "text"
+						},
+						{
+							"key": "attachments",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						},
+						{
+							"key": "_method",
+							"value": "PUT",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{APP_URL}}/posts/{{ID_POST}}",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"posts",
+						"{{ID_POST}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Post",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{APP_URL}}/posts/{{ID_POST}}",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"posts",
+						"{{ID_POST}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{APP_URL}}/posts/{{ID_POST}}",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"posts",
+						"{{ID_POST}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Posts",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_KEY}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{APP_URL}}/posts?page=1",
+					"host": [
+						"{{APP_URL}}"
+					],
+					"path": [
+						"posts"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "APP_URL",
+			"value": "http://127.0.0.1:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "ACCESS_KEY",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ID_POST",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
